@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartas Aleatórias</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        #card-container {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            width: 340px;
+            height: 540px;
+            border-radius: 15px;
+            background-color: white;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card.good {
+            border: 4px solid green;
+        }
+
+        .card.bad {
+            border: 4px solid red;
+        }
+
+        .card.neutral {
+            border: 4px solid blue;
+        }
+
+        .card-title {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            text-align: center;
+            color: #333;
+        }
+
+        .card-image {
+            width: 50%;
+            height: auto;
+            border-radius: 10px;
+            margin: 0 auto 10px;
+        }
+
+        .card-description {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 20px;
+            overflow-y: auto;
+            text-align: justify;
+            flex-grow: 1;
+            padding-right: 10px;
+        }
+
+        .card-effect {
+            font-size: 0.9em;
+            padding: 10px;
+            border: 2px solid;
+            border-radius: 10px;
+            color: #333;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+            max-height: 100px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .good-effect {
+            border-color: green;
+        }
+
+        .bad-effect {
+            border-color: red;
+        }
+
+        .neutral-effect {
+            border-color: blue;
+        }
+
+        .card-source {
+            font-size: 0.7em;
+            color: #888;
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="card-container"></div>
+    <button onclick="generateRandomCard()">Gerar Carta Aleatória</button>
+    <script>
+        const cards = [
+            {
+                title: "Carta da Fortuna",
+                description: "<center><img src='img/tesouro.png' class='card-image'></center><p style='text-align: justify;'>A engenharia florestal desempenha um papel crucial na manutenção e melhoria dos ecossistemas florestais, contribuindo significativamente para a sustentabilidade ambiental. Uma curiosidade interessante sobre essa área é a utilização de drones e tecnologias de sensoriamento remoto para monitorar e gerir florestas. Essas ferramentas permitem a coleta de dados precisos sobre a saúde das florestas, detecção precoce de pragas e doenças, e avaliação de danos causados por incêndios ou atividades humanas. Os drones equipados com câmeras multiespectrais e LiDAR (Light Detection and Ranging) podem capturar imagens detalhadas da cobertura do solo e medir a biomassa florestal com alta precisão. Além disso, a integração de sistemas de informações geográficas (SIG) com dados de sensoriamento remoto possibilita a criação de modelos preditivos para o manejo florestal, ajudando na tomada de decisões informadas sobre práticas de manejo sustentável, como o desbaste seletivo e a restauração de áreas degradadas. Esses avanços tecnológicos estão revolucionando a engenharia florestal, permitindo uma gestão mais eficaz e sustentável dos recursos florestais, essencial para a mitigação das mudanças climáticas e a preservação da biodiversidade.</p>",
+                effect: "good",
+                consequences: "Ganhe 100 moedas e 10 pontos de vida",
+                source: "1, 2, 33"
+            },
+            {
+                title: "Carta do Azar",
+                description: "<center><img src='img/prisao.png' class='card-image'></center><p style='text-align: justify;'>Você caiu em uma armadilha escondida no chão da floresta. Sua perna está presa e você perde tempo tentando se soltar. A erosão do solo pode ser prevenida com técnicas de manejo florestal.</p>",
+                effect: "bad",
+                consequences: "Perca sua rodada e 5 pontos de vida"
+            },
+            {
+                title: "Carta de Conhecimento",
+                description: "<p style='text-align: justify;'>Você encontrou um ancião sábio na floresta. Ele compartilhou com você conhecimentos antigos sobre como sobreviver e prosperar na natureza. As florestas são essenciais para a regulação do clima e a manutenção da biodiversidade.</p>",
+                effect: "neutral",
+                consequences: "Ganhe 20 pontos de experiência e 10 moedas"
+            }
+        ];
+
+        function generateRandomCard() {
+            const card = cards[Math.floor(Math.random() * cards.length)];
+            const cardContainer = document.getElementById('card-container');
+            
+            cardContainer.innerHTML = `
+                <div class="card ${card.effect}">
+                    <div class="card-title">${card.title}</div>
+                    <div class="card-description">${card.description}</div>
+                    <div class="card-effect ${card.effect}-effect">
+                        ${card.consequences}
+                    </div>
+                    ${card.source ? `<div class="card-source">Fonte: ${card.source}</div>` : ''}
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

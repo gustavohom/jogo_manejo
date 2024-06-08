@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .card {
+            width: 380px;
+            border-radius: 15px;
+            background-color: #fff;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.9em;
+            border: 3px solid #007BFF; /* Borda azul em toda a área útil */
+        }
+
+        .card-title {
+            font-size: 1.2em;
+            margin-bottom: 1px;
+            text-align: center;
+            color: #333;
+        }
+
+        .button {
+            padding: 5px 20px;
+            font-size: 0.9em;
+            margin: 3px;
+            cursor: pointer;
+            border: none;
+            border-radius: 1px;
+            background-color: #007BFF;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .button.red {
+            background-color: #FF0000;
+        }
+
+        .button.red:hover {
+            background-color: #CC0000;
+        }
+
+        .button.green {
+            background-color: #28a745;
+        }
+
+        .button.green:hover {
+            background-color: #218838;
+        }
+
+        .button.small-button {
+            padding: 4px 13px;
+            font-size: 0.8em;
+            margin-top: 1px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin-top: 3px;
+        }
+
+        .square-button {
+            width: 30px;
+            height: 30px;
+            background-color: #FFF;
+            border: 2px solid #CCC;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .square-button.active-red {
+            background-color: #FF0000;
+            border-color: #FF0000;
+        }
+
+        .square-button.active-green {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .square-button.active-cycle {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .cycle-button {
+            background-color: #FF0000;
+            border-color: #FF0000;
+        }
+
+        .highlight {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #007BFF;
+            margin-top: 10px;
+        }
+
+        .count-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 1px 0;
+        }
+
+        .count-container span {
+            margin: 1px 0;
+            font-size: 3em;
+            font-weight: bold;
+        }
+
+        .radio-container {
+            display: flex;
+            justify-content: center;
+            margin: 0px 0;
+        }
+
+        .radio-container label {
+            margin: 0 0px;
+        }
+
+        .menu-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 1px;
+        }
+
+        .cycle-container, .resources-container, .money-container, .menu-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid;
+            border-radius: 10px;
+            padding: 7px;
+            margin-top: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .cycle-container {
+            border-color: #FF0000;
+        }
+
+        .money-container {
+            border-color: #28a745;
+        }
+
+        .resources-container {
+            border-color: #007BFF;
+        }
+
+        .menu-box {
+            border-color: #007BFF;
+        }
+
+        .cycle-title {
+            font-size: 1.3em;
+            color: #FF0000;
+	        font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .money-title {
+            font-size: 1.3em;
+            color: #28a745;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .resources-title {
+            font-size: 1.3em;
+            color: #007BFF;
+	        font-weight: bold;
+        }
+
+        .menu-box-title {
+            font-size: 1.3em;
+            color: #007BFF;
+            margin-bottom: 5px;
+        }
+
+        select {
+            font-size: 0.8em;
+            padding: 2px;
+            margin-bottom: 3px;
+            border: 2px solid #007BFF;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .player-count-container {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .player-count-container span {
+            margin-left: 5px;
+            font-size: 1em;
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        .money-container span {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 5px 0;
+        }
+
+        .money-button-container, .resource-button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 3px;
+        }
+
+        .resource-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 15px;
+        }
+
+        .resource-item span {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .resources-container .resource-item {
+            flex: 1;
+        }
+
+        /* Adicione esta classe para mudar a cor de fundo da área útil */
+        .win-background {
+            background-color: #d4f4dd; /* Verde claro */
+        }
+
+        /* Adicione esta classe para mudar a borda da área útil */
+        .win-border {
+            border-color: #28a745; /* Verde claro */
+        }
+
+        /* Adicione esta classe para mudar a cor do título */
+        .win-title {
+            color: #28a745; /* Verde claro */
+        }
+
+        /* Adicione esta classe para mudar a cor do texto */
+        .win-text {
+            color: #28a745; /* Verde claro */
+        }
+
+        /* Adicione estas classes para mudar o tamanho do texto "Func.", "Maqui." e "Mad." */
+        #employee-title {
+            font-size: 1.2em; /* Altere para o tamanho desejado */
+        }
+
+        #machine-title {
+            font-size: 1.2em; /* Altere para o tamanho desejado */
+        }
+
+        #wood-title {
+            font-size: 1.2em; /* Altere para o tamanho desejado */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card" id="main-card">
+        <select id="engineer-select" class="card-title">
+            <option value="1">Engenheiro 1</option>
+            <option value="2">Engenheiro 2</option>
+            <option value="3">Engenheiro 3</option>
+            <option value="4">Engenheiro 4</option>
+            <option value="5">Engenheiro 5</option>
+            <option value="6">Engenheiro 6</option>
+        </select>
+        <button class="button red small-button" onclick="resetAll()">Resetar Carta</button>
+        
+        <div class="cycle-container">
+            <div class="cycle-title">Ciclo</div>
+            <div class="button-container" id="cycle-container">
+                <!-- Ciclo buttons will be added here by JavaScript -->
+            </div>
+        </div>
+        
+        <div class="menu-box" id="menu-box">
+            <div class="button-container">
+                <div class="menu-box-title">Prisão:</div>
+                <div id="prison-container" style="display: flex;">
+                    <!-- Prisão buttons will be added here by JavaScript -->
+                </div>
+            </div>
+            <div class="button-container">
+                <div class="menu-box-title">Bônus:</div>
+                <div id="bonus-container" style="display: flex;">
+                    <!-- Bônus buttons will be added here by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="resources-container" id="resources-container">
+            <div class="resources-title">Recursos</div>
+            <div style="display: flex;">
+                <div class="resource-item">
+                    <div id="employee-title">Func.</div>
+                    <span id="employee-count">0</span>
+                    <div class="resource-button-container">
+                        <button class="button small-button" onclick="modifyCount('employee', -1)">-</button>
+                        <button class="button small-button" onclick="modifyCount('employee', 1)">+</button>
+                    </div>
+                    <button class="button" onclick="resetCount('employee')">Zerar</button>
+                </div>
+                <div class="resource-item">
+                    <div id="machine-title">Maqui.</div>
+                    <span id="machine-count">0</span>
+                    <div class="resource-button-container">
+                        <button class="button small-button" onclick="modifyCount('machine', -1)">-</button>
+                        <button class="button small-button" onclick="modifyCount('machine', 1)">+</button>
+                    </div>
+                    <button class="button" onclick="resetCount('machine')">Zerar</button>
+                </div>
+                <div class="resource-item">
+                    <div id="wood-title">Mad.</div>
+                    <span id="wood-count">0</span>
+                    <div class="resource-button-container">
+                        <button class="button small-button" onclick="modifyCount('wood', -1)">-</button>
+                        <button class="button small-button" onclick="modifyCount('wood', 1)">+</button>
+                    </div>
+                    <button class="button" onclick="resetCount('wood')">Zerar</button>
+                </div>
+            </div>
+            <div class="radio-container">
+                <select id="resource-multiplier">
+                    <option value="1">1</option>
+                    <option value="10">10</option>
+                    <option value="100">100</option>
+                    <option value="1000">1000</option>
+                    <option value="10000">10000</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="money-container">
+            <div class="money-title">Caixa</div>
+            <span id="money-count">$ 0</span>
+            <div class="money-button-container">
+                <button class="button green small-button" onclick="modifyMoney(-1)">-</button>
+                <button class="button green small-button" onclick="modifyMoney(1)">+</button>
+            </div>
+            <button class="button green" onclick="resetCount('money')">Zerar</button>
+            <div class="radio-container">
+                <select id="money-multiplier">
+                    <option value="1">1</option>
+                    <option value="10">10</option>
+                    <option value="100">100</option>
+                    <option value="1000">1000</option>
+                    <option value="10000">10000</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="button-container">
+            <button class="button" onclick="window.location.href='cartas.html'">Gerar Carta</button>
+            <button class="button red" onclick="window.location.href='bonus.html'">Gerar Carta Surpresa</button>
+        </div>
+    </div>
+
+    <script>
+        function createButtons(containerId, count, className, activeClass) {
+            const container = document.getElementById(containerId);
+            for (let i = 0; i <= count; i++) {
+                const button = document.createElement('div');
+                button.classList.add(className);
+                button.id = `${containerId}-${i}`;
+                button.innerText = i;
+
+                // Adicione a classe específica para os botões de ciclo
+                if (containerId === 'cycle-container') {
+                    button.classList.add('cycle-button');
+                }
+
+                button.onclick = function() {
+                    for (let j = 0; j <= count; j++) {
+                        document.getElementById(`${containerId}-${j}`).classList.remove(activeClass);
+                    }
+                    for (let j = 0; j <= i; j++) {
+                        document.getElementById(`${containerId}-${j}`).classList.add(activeClass);
+                    }
+                    // If cycle 5 is selected, change color to green and update main card style
+                    if (i === 5 && containerId === 'cycle-container') {
+                        document.querySelector('.cycle-container').style.borderColor = '#28a745';
+                        document.querySelector('.cycle-title').classList.add('win-title');
+                        document.getElementById('main-card').classList.add('win-background', 'win-border');
+                        document.getElementById('resources-container').classList.add('win-border');
+                        document.querySelector('.resources-title').classList.add('win-title');
+                        document.getElementById('menu-box').classList.add('win-border');
+                        document.querySelectorAll('.menu-box-title')[0].classList.add('win-title'); // Adiciona a classe ao título "Prisão"
+                        document.querySelectorAll('.menu-box-title')[1].classList.add('win-title'); // Adiciona a classe ao título "Bônus"
+                        document.getElementById('employee-count').classList.add('win-text');
+                        document.getElementById('machine-count').classList.add('win-text');
+                        document.getElementById('wood-count').classList.add('win-text');
+                        document.getElementById('employee-title').classList.add('win-text'); // Func.
+                        document.getElementById('machine-title').classList.add('win-text'); // Maqui.
+                        document.getElementById('wood-title').classList.add('win-text'); // Mad.
+                    } else if (containerId === 'cycle-container') {
+                        document.querySelector('.cycle-container').style.borderColor = '#FF0000';
+                        document.querySelector('.cycle-title').classList.remove('win-title');
+                        document.getElementById('main-card').classList.remove('win-background', 'win-border');
+                        document.getElementById('resources-container').classList.remove('win-border');
+                        document.querySelector('.resources-title').classList.remove('win-title');
+                        document.getElementById('menu-box').classList.remove('win-border');
+                        document.querySelectorAll('.menu-box-title')[0].classList.remove('win-title'); // Remove a classe do título "Prisão"
+                        document.querySelectorAll('.menu-box-title')[1].classList.remove('win-title'); // Remove a classe do título "Bônus"
+                        document.getElementById('employee-count').classList.remove('win-text');
+                        document.getElementById('machine-count').classList.remove('win-text');
+                        document.getElementById('wood-count').classList.remove('win-text');
+                        document.getElementById('employee-title').classList.remove('win-text'); // Func.
+                        document.getElementById('machine-title').classList.remove('win-text'); // Maqui.
+                        document.getElementById('wood-title').classList.remove('win-text'); // Mad.
+                    }
+                    saveState();
+                };
+                container.appendChild(button);
+            }
+        }
+
+        function saveState() {
+            const state = {
+                employeeCount: document.getElementById('employee-count').innerText,
+                machineCount: document.getElementById('machine-count').innerText,
+                woodCount: document.getElementById('wood-count').innerText,
+                moneyCount: document.getElementById('money-count').innerText,
+                cycleState: [...document.getElementById('cycle-container').children].map(button => button.classList.contains('active-cycle')),
+                prisonState: [...document.getElementById('prison-container').children].map(button => button.classList.contains('active-red')),
+                bonusState: [...document.getElementById('bonus-container').children].map(button => button.classList.contains('active-green')),
+                isCycleComplete: document.getElementById('cycle-container-5').classList.contains('active-cycle')
+            };
+            localStorage.setItem('state', JSON.stringify(state));
+        }
+
+        function loadState() {
+            const state = JSON.parse(localStorage.getItem('state'));
+            if (state) {
+                document.getElementById('employee-count').innerText = state.employeeCount;
+                document.getElementById('machine-count').innerText = state.machineCount;
+                document.getElementById('wood-count').innerText = state.woodCount;
+                document.getElementById('money-count').innerText = state.moneyCount;
+
+                state.cycleState.forEach((isActive, index) => {
+                    const button = document.getElementById(`cycle-container-${index}`);
+                    if (isActive) {
+                        button.classList.add('active-cycle');
+                    }
+                });
+
+                state.prisonState.forEach((isActive, index) => {
+                    const button = document.getElementById(`prison-container-${index}`);
+                    if (isActive) {
+                        button.classList.add('active-red');
+                    }
+                });
+
+                state.bonusState.forEach((isActive, index) => {
+                    const button = document.getElementById(`bonus-container-${index}`);
+                    if (isActive) {
+                        button.classList.add('active-green');
+                    }
+                });
+
+                if (state.isCycleComplete) {
+                    document.querySelector('.cycle-container').style.borderColor = '#28a745';
+                    document.querySelector('.cycle-title').classList.add('win-title');
+                    document.getElementById('main-card').classList.add('win-background', 'win-border');
+                    document.getElementById('resources-container').classList.add('win-border');
+                    document.querySelector('.resources-title').classList.add('win-title');
+                    document.getElementById('menu-box').classList.add('win-border');
+                    document.querySelectorAll('.menu-box-title')[0].classList.add('win-title'); // Adiciona a classe ao título "Prisão"
+                    document.querySelectorAll('.menu-box-title')[1].classList.add('win-title'); // Adiciona a classe ao título "Bônus"
+                    document.getElementById('employee-count').classList.add('win-text');
+                    document.getElementById('machine-count').classList.add('win-text');
+                    document.getElementById('wood-count').classList.add('win-text');
+                    document.getElementById('employee-title').classList.add('win-text'); // Func.
+                    document.getElementById('machine-title').classList.add('win-text'); // Maqui.
+                    document.getElementById('wood-title').classList.add('win-text'); // Mad.
+                }
+            }
+        }
+
+        function resetAll() {
+            if (confirm('Tem certeza que deseja zerar tudo?')) {
+                localStorage.removeItem('state');
+                document.getElementById('employee-count').innerText = 0;
+                document.getElementById('machine-count').innerText = 0;
+                document.getElementById('wood-count').innerText = 0;
+                document.getElementById('money-count').innerText = '$ 0';
+                document.getElementById('main-card').classList.remove('win-background', 'win-border');
+                document.getElementById('resources-container').classList.remove('win-border');
+                document.querySelector('.resources-title').classList.remove('win-title');
+                document.getElementById('menu-box').classList.remove('win-border');
+                document.querySelectorAll('.menu-box-title').forEach(title => title.classList.remove('win-title'));
+                document.querySelectorAll('.resource-item div').forEach(div => div.classList.remove('win-text'));
+                document.getElementById('employee-count').classList.remove('win-text');
+                document.getElementById('machine-count').classList.remove('win-text');
+                document.getElementById('wood-count').classList.remove('win-text');
+
+                const cycleButtons = document.getElementById('cycle-container').children;
+                for (let button of cycleButtons) {
+                    button.classList.remove('active-cycle');
+                }
+
+                const prisonButtons = document.getElementById('prison-container').children;
+                for (let button of prisonButtons) {
+                    button.classList.remove('active-red');
+                }
+
+                const bonusButtons = document.getElementById('bonus-container').children;
+                for (let button of bonusButtons) {
+                    button.classList.remove('active-green');
+                }
+
+                saveState();
+            }
+        }
+
+        function modifyCount(type, amount) {
+            let count = parseInt(document.getElementById(`${type}-count`).innerText.replace(/\D/g, ''));
+            const multiplier = parseInt(document.getElementById('resource-multiplier').value);
+            count += amount * multiplier;
+            if (count < 0) count = 0;
+            document.getElementById(`${type}-count`).innerText = count.toLocaleString('pt-BR');
+            saveState();
+        }
+
+        function resetCount(type) {
+            if (confirm('Tem certeza que deseja zerar?')) {
+                document.getElementById(`${type}-count`).innerText = 0;
+                saveState();
+            }
+        }
+
+        function modifyMoney(amount) {
+            let money = parseInt(document.getElementById('money-count').innerText.replace(/\D/g, ''));
+            const multiplier = parseInt(document.getElementById('money-multiplier').value);
+            money += amount * multiplier;
+            if (money < 0) money = 0;
+            document.getElementById('money-count').innerText = '$ ' + money.toLocaleString('pt-BR');
+            saveState();
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            createButtons('cycle-container', 5, 'square-button', 'active-cycle');
+            createButtons('prison-container', 2, 'square-button', 'active-red');
+            createButtons('bonus-container', 2, 'square-button', 'active-green');
+            loadState();
+        });
+    </script>
+</body>
+</html>
