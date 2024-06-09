@@ -36,45 +36,73 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            overflow: hidden; /* Mantém a carta sem rolagem externa */
+            border: 2px solid #007BFF; /* Borda azul inicial */
         }
 
-        .card.good {
-            border: 4px solid green;
+        .card.correct {
+            background-color: #d4edda;
+            border-color: #155724;
         }
 
-        .card.bad {
-            border: 4px solid red;
-        }
-
-        .card.neutral {
-            border: 4px solid blue;
+        .card.incorrect {
+            background-color: #f8d7da;
+            border-color: #721c24;
         }
 
         .card-title {
-            font-size: 1.8em;
+            font-size: 1.4em;
             margin-bottom: 10px;
             text-align: center;
             color: #333;
         }
 
-        .card-image {
-            width: 50%;
-            height: auto;
-            border-radius: 10px;
-            margin: 0 auto 10px;
-        }
-
-        .card-description {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 20px;
-            overflow-y: auto;
-            text-align: justify;
+        .card-content {
             flex-grow: 1;
-            padding-right: 10px;
+            overflow-y: auto;
+            padding-right: 10px; /* Espaço da barra de rolagem */
         }
 
-        .card-effect {
+        .card-prelude-question {
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            text-align: justify;
+            color: #666;
+        }
+
+        .card-options {
+            margin-top: 10px;
+        }
+
+        .card-option {
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-option.selected-option {
+            background-color: #c0d8ff; /* Cor de fundo quando selecionado */
+        }
+
+        .card-option:hover {
+            background-color: #e0e0e0;
+        }
+
+        .card-option input {
+            display: none;
+        }
+
+        .card-option label {
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .card-consequence {
             font-size: 0.9em;
             padding: 10px;
             border: 2px solid;
@@ -90,18 +118,6 @@
             text-align: center;
         }
 
-        .good-effect {
-            border-color: green;
-        }
-
-        .bad-effect {
-            border-color: red;
-        }
-
-        .neutral-effect {
-            border-color: blue;
-        }
-
         .card-source {
             font-size: 0.7em;
             color: #888;
@@ -109,20 +125,36 @@
             margin-top: 10px;
         }
 
+
+        .card-image {
+            width: 50%;
+            height: auto;
+            border-radius: 10px;
+            margin: 0 auto 10px;
+        }
+
+        .card-image-txt {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin: 0 auto 10px;
+            cursor: pointer; /* Cursor de ponteiro para indicar que a imagem é clicável */
+        }
+
         .button {
-            padding: 10px 20px;
-            font-size: 1.2em;
-            margin: 1px 5px;
+            padding: 6px 14px; /* Menor tamanho do botão */
+            font-size: 1em;
+            margin: 10px 0; /* Espaço maior ao redor do botão */
             cursor: pointer;
             border: none;
-            border-radius: 1px;
-            background-color: #007BFF;
+            border-radius: 25px; /* Botão com bordas arredondadas */
+            background-color: #28a745; /* Nova cor do botão */
             color: white;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, padding 0.3s;
         }
 
         .button:hover {
-            background-color: #0056b3;
+            background-color: #218838;
         }
 
         .button.red {
@@ -140,34 +172,145 @@
             justify-content: center;
             margin-top: 1px;
         }
+
+        .button.small {
+            padding: 10px 20px; /* Tamanho original dos botões voltar e gerar nova carta */
+            font-size: 1.2em;
+            margin: 1px 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 1px;
+            background-color: #007BFF;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .button.small:hover {
+            background-color: #0056b3;
+        }
+
+        .button.red.small {
+            background-color: #FF0000; /* Cor vermelha */
+        }
+
+        .button.red.small:hover {
+            background-color: #CC0000; /* Cor vermelha mais escura ao passar o mouse */
+        }
+
+        /* Estilos para o modal */
+        .modal {
+            display: none; /* Escondido por padrão */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content {
+            margin: 15% auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div id="card-container"></div>
     <div class="button-container">
-        <button class="button" onclick="generateRandomCard()">Gerar Nova Carta</button>
-        <button class="button red" onclick="window.location.href='index.html'">Voltar</button>
+        <button class="button small" onclick="generateRandomCard()">Gerar Nova Carta</button>
+        <button class="button red small" onclick="window.location.href='index.html'">Voltar</button>
     </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+    </div>
+
     <script>
         const cards = [
             {
-                title: "Carta da Fortuna",
-                description: "<center><img src='img/tesouro.png' class='card-image'></center><p style='text-align: justify;'>A engenharia florestal desempenha um papel crucial na manutenção e melhoria dos ecossistemas florestais, contribuindo significativamente para a sustentabilidade ambiental. Uma curiosidade interessante sobre essa área é a utilização de drones e tecnologias de sensoriamento remoto para monitorar e gerir florestas. Essas ferramentas permitem a coleta de dados precisos sobre a saúde das florestas, detecção precoce de pragas e doenças, e avaliação de danos causados por incêndios ou atividades humanas. Os drones equipados com câmeras multiespectrais e LiDAR (Light Detection and Ranging) podem capturar imagens detalhadas da cobertura do solo e medir a biomassa florestal com alta precisão. Além disso, a integração de sistemas de informações geográficas (SIG) com dados de sensoriamento remoto possibilita a criação de modelos preditivos para o manejo florestal, ajudando na tomada de decisões informadas sobre práticas de manejo sustentável, como o desbaste seletivo e a restauração de áreas degradadas. Esses avanços tecnológicos estão revolucionando a engenharia florestal, permitindo uma gestão mais eficaz e sustentável dos recursos florestais, essencial para a mitigação das mudanças climáticas e a preservação da biodiversidade.</p>",
-                effect: "good",
-                consequences: "Ganhe 100 moedas e 10 pontos de vida",
-                source: "1, 2, 33"
+                title: "Sustentabilidade Ambiental",
+                preludeQuestion: "A sustentabilidade ambiental é fundamental para a preservação dos recursos naturais. Como a engenharia florestal contribui para a sustentabilidade ambiental?",
+                options: [
+                    "Plantando árvores em áreas urbanas",
+                    "Monitorando a saúde das florestas",
+                    "Construindo parques de diversões"
+                ],
+                correctOption: 1,
+                source: "10, 20, 30",
+                consequences: {
+                    good: "Ganhe 70 moedas e 7 pontos de vida",
+                    bad: "Perca 4 pontos de vida"
+                }
             },
             {
-                title: "Carta do Azar",
-                description: "<center><img src='img/prisao.png' class='card-image'></center><p style='text-align: justify;'>Você caiu em uma armadilha escondida no chão da floresta. Sua perna está presa e você perde tempo tentando se soltar. A erosão do solo pode ser prevenida com técnicas de manejo florestal.</p>",
-                effect: "bad",
-                consequences: "Perca sua rodada e 5 pontos de vida"
+                title: "Curiosidade sobre Engenharia Florestal",
+                preludeQuestion: "A engenharia florestal desempenha um papel crucial <center><img src='img/img_1.png' class='card-image')'></center>  na manutenção e melhoria dos ecossistemas florestais. Qual é a função dos drones na engenharia florestal? A engenharia florestal desempenha um papel crucial na manutenção e melhoria dos ecossistemas florestais. <center><img src='img/img_1.png' class='card-image-txt' onclick='expandImage(this)'></center> </br>Qual é a função dos drones na engenharia florestal? A engenharia florestal desempenha um papel crucial na manutenção e melhoria dos ecossistemas florestais. Qual é a função dos drones na engenharia florestal? A engenharia florestal desempenha um papel crucial na manutenção e melhoria dos ecossistemas florestais. Qual é a função dos drones na engenharia florestal? A engenharia florestal desempenha um papel crucial na manutenção e melhoria dos ecossistemas florestais. Qual é a função dos drones na engenharia florestal? A engenharia florestal desempenha um papel crucial na manutenção e melhoria dos ecossistemas florestais. Qual é a função dos drones na engenharia florestal? A engenharia florestal desempenha um papel crucial na manutenção e melhoria dos ecossistemas florestais. Qual é a função dos drones na engenharia florestal? A engenharia florestal desempenha um papel crucial na manutenção e melhoria dos ecossistemas florestais. Qual é a função dos drones na engenharia florestal?",
+                options: [
+                    "Monitorar e gerir florestas",
+                    "Construir estradas florestais",
+                    "Realizar a poda das árvores"
+                ],
+                correctOption: 0,
+                consequences: {
+                    good: "Ganhe 100 moedas e 10 pontos de vida",
+                    bad: "Perca 5 pontos de vida"
+                }
             },
             {
-                title: "Carta de Conhecimento",
-                description: "<p style='text-align: justify;'>Você encontrou um ancião sábio na floresta. Ele compartilhou com você conhecimentos antigos sobre como sobreviver e prosperar na natureza. As florestas são essenciais para a regulação do clima e a manutenção da biodiversidade.</p>",
-                effect: "neutral",
-                consequences: "Ganhe 20 pontos de experiência e 10 moedas"
+                title: "Tecnologia em Florestas",
+                preludeQuestion: "O LiDAR é uma tecnologia importante utilizada em diversas áreas, incluindo a engenharia florestal. O que é LiDAR?",
+                options: [
+                    "Uma tecnologia de detecção e medição de distância",
+                    "Um tipo de drone",
+                    "Um programa de computador para gestão florestal",
+                    "Um método de poda de árvores"
+                ],
+                correctOption: 0,
+                source: "5, 6, 77",
+                consequences: {
+                    good: "Ganhe 50 moedas e 5 pontos de vida",
+                    bad: "Perca 3 pontos de vida"
+                }
+            },
+            {
+                title: "Impacto das Práticas Florestais",
+                preludeQuestion: "A engenharia florestal também inclui a gestão de práticas florestais que impactam diretamente a saúde dos ecossistemas florestais. Quais são as práticas recomendadas para minimizar o impacto ambiental negativo?",
+                options: [
+                    "Plantio de árvores nativas",
+                    "Uso de pesticidas sintéticos",
+                    "Desmatamento controlado",
+                    "Irrigação intensiva"
+                ],
+                correctOption: 0,
+                source: "11, 22, 33",
+                consequences: {
+                    good: "Ganhe 80 moedas e 8 pontos de vida",
+                    bad: "Perca 6 pontos de vida"
+                }
             }
         ];
 
@@ -175,16 +318,86 @@
             const card = cards[Math.floor(Math.random() * cards.length)];
             const cardContainer = document.getElementById('card-container');
             
-            cardContainer.innerHTML = `
-                <div class="card ${card.effect}">
-                    <div class="card-title">${card.title}</div>
-                    <div class="card-description">${card.description}</div>
-                    <div class="card-effect ${card.effect}-effect">
-                        ${card.consequences}
+            let optionsHtml = '';
+            card.options.forEach((option, index) => {
+                optionsHtml += `
+                    <div class="card-option">
+                        <input type="radio" name="options" value="${index}" id="option-${index}">
+                        <label for="option-${index}">${option}</label>
                     </div>
+                `;
+            });
+
+            cardContainer.innerHTML = `
+                <div class="card" id="current-card">
+                    <div class="card-title">${card.title}</div>
+                    <div class="card-content">
+                        <div class="card-prelude-question">${card.preludeQuestion}</div>
+                        <div class="card-options">${optionsHtml}</div>
+                    </div>
+                    <button class="button" onclick="checkAnswer(${card.correctOption}, '${card.consequences.good}', '${card.consequences.bad}')">Responder</button>
+                    <div class="card-consequence" id="consequence-box">Aguardando resposta</div>
                     ${card.source ? `<div class="card-source">Fonte: ${card.source}</div>` : ''}
                 </div>
             `;
+        }
+
+        function checkAnswer(correctOption, goodConsequence, badConsequence) {
+            const cardElement = document.getElementById('current-card');
+            const selectedOption = document.querySelector('input[name="options"]:checked');
+            const consequenceBox = document.getElementById('consequence-box');
+
+            if (selectedOption) {
+                const options = document.querySelectorAll('input[name="options"]');
+                options.forEach(option => option.disabled = true);
+
+                if (parseInt(selectedOption.value) === correctOption) {
+                    cardElement.classList.remove('incorrect');
+                    cardElement.classList.add('correct');
+                    consequenceBox.innerHTML = goodConsequence;
+                } else {
+                    cardElement.classList.remove('correct');
+                    cardElement.classList.add('incorrect');
+                    consequenceBox.innerHTML = badConsequence;
+                }
+
+                // Aplica as cores corretas após responder
+                document.querySelectorAll('.card-option').forEach((option, index) => {
+                    if (index === correctOption) {
+                        option.style.backgroundColor = '#66bb6a'; // Verde claro para a correta
+                        option.style.color = 'white';
+                    } else {
+                        option.style.backgroundColor = '#e57373'; // Vermelho claro para as erradas
+                        option.style.color = 'white';
+                    }
+                });
+            } else {
+                alert("Por favor, selecione uma opção.");
+            }
+        }
+
+        // Adicionar evento de clique para selecionar a opção
+        document.addEventListener('click', function(event) {
+            if (event.target.closest('.card-option')) {
+                document.querySelectorAll('.card-option').forEach(option => option.classList.remove('selected-option'));
+                event.target.closest('.card-option').classList.add('selected-option');
+                event.target.closest('.card-option').querySelector('input').checked = true;
+            }
+        });
+
+        // Função para expandir a imagem em um modal
+        function expandImage(img) {
+            var modal = document.getElementById("myModal");
+            var modalImg = document.getElementById("img01");
+            modal.style.display = "block";
+            modalImg.src = img.src;
+        }
+
+        // Fechar o modal quando o usuário clicar no "X"
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function() { 
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
         }
 
         document.addEventListener('DOMContentLoaded', (event) => {
